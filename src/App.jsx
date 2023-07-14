@@ -1,63 +1,38 @@
 import * as dayjs from "dayjs";
 import TowerCard from "./TowerCard";
+import { useState } from "react";
+import { TOWERS } from "./towers";
+import Fuse from "fuse.js";
 
-// Cycle of 4 towers every 8 hours
-const towersCycle = [
-  "mortar-monkey",
-  "engineer-monkey",
-  "beast-handler",
-  "ninja-monkey",
-  "super-monkey",
-  "sniper-monkey",
-  "boomerang-monkey",
-  "dartling-gunner",
-  "druid",
-  "monkey-ace",
-  "monkey-sub",
-  "glue-gunner",
-  "ice-monkey",
-  "dart-monkey",
-  "banana-farm",
-  "monkey-village",
-  "alchemist",
-  "spike-factory",
-  "bomb-shooter",
-  "heli-pilot",
-  "monkey-buccaneer",
-  "tack-shooter",
-  "wizard-monkey",
-];
+// American Independence Day Event
+// Ends July 24th 8pm NZST
+// Ends July 24th 4am EST
 
-const towersEnglish = towersCycle.map((tower) =>
-  tower.replace("-", " ").replace(/\b\w/g, (c) => c.toUpperCase()),
-);
+let startDate = dayjs(new Date(2023, 6, 10, 12));
+let offset = 7;
+let endDate = dayjs(new Date(2023, 6, 24, 4));
 
-// 12pm boat, tack, wizard, mortar
+let startToEndDateList = [];
+let offsetList = [];
 
-// 8pm engineer, beast, ninja, super
+while (startDate.isBefore(endDate)) {
+  startToEndDateList.push(startDate);
+  offsetList.push(offset);
 
-// 4am july 14
-// Sniper Monkey
-// Boomerang Monkey
-// Dartling Gunner
-// Druid
+  startDate = startDate.add(8, "hour");
+  offset += 4;
+}
+
+const fuse = new Fuse(TOWERS, {
+  keys: ["towerEnglishName", "aliases"],
+});
 
 function App() {
-  let startToEndDateList = [];
-  let offsetList = [];
+  const [filterText, setFilterText] = useState("");
 
-  // Ends July 24th 8pm NZST
-  // Ends July 24th 4am EST
-
-  let startDate = dayjs(new Date(2023, 6, 10, 12));
-  let offset = 7;
-  let endDate = dayjs(new Date(2023, 6, 24, 4));
-
-  while (startDate.isBefore(endDate)) {
-    startToEndDateList.push(startDate);
-    offsetList.push(offset);
-    startDate = startDate.add(8, "hour");
-    offset += 4;
+  let fuseResult = fuse.search(filterText, { limit: 1 });
+  if (fuseResult.length > 0) {
+    console.log(fuseResult[0].item);
   }
 
   let now = dayjs();
@@ -68,21 +43,29 @@ function App() {
     if (startToEndDateList[i].isAfter(now.subtract(8, "hour"))) {
       dateAndOffsetList.push([
         startToEndDateList[i],
-        (offsetList[i] + 0) % towersEnglish.length,
-        (offsetList[i] + 1) % towersEnglish.length,
-        (offsetList[i] + 2) % towersEnglish.length,
-        (offsetList[i] + 3) % towersEnglish.length,
+        (offsetList[i] + 0) % TOWERS.length,
+        (offsetList[i] + 1) % TOWERS.length,
+        (offsetList[i] + 2) % TOWERS.length,
+        (offsetList[i] + 3) % TOWERS.length,
       ]);
     }
   }
 
   return (
-    <main className="flex max-w-[600px] flex-col text-center">
+    <main className="flex max-w-[600px] flex-col items-center text-center">
       <h1 className="mb-8 text-5xl">
         BTD6 Collection Event
         <br />
         Calculator
       </h1>
+
+      <input
+        type="text"
+        value={filterText}
+        placeholder="Search tower..."
+        onChange={(e) => setFilterText(e.target.value)}
+        className="mb-8 max-w-[250px] rounded-lg border border-gray-300 bg-gray-100 p-1 shadow dark:border-gray-700 dark:bg-gray-800"
+      />
 
       <div>
         {dateAndOffsetList.map(
@@ -97,8 +80,8 @@ function App() {
                   (index) => (
                     <TowerCard
                       key={index}
-                      tower={towersCycle[index]}
-                      towerEnglish={towersEnglish[index]}
+                      towerFileName={TOWERS[index].towerFileName}
+                      towerEnglishName={TOWERS[index].towerEnglishName}
                     />
                   ),
                 )}
