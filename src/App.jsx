@@ -9,18 +9,23 @@ import Fuse from "fuse.js";
 // Ends July 24th 4am EST
 
 let startDate = dayjs(new Date(2023, 6, 10, 12));
-let offset = 7;
+let startingIndex = 7;
 let endDate = dayjs(new Date(2023, 6, 24, 4));
 
 let startToEndDateList = [];
-let offsetList = [];
+let indexList = [];
 
 while (startDate.isBefore(endDate)) {
   startToEndDateList.push(startDate);
-  offsetList.push(offset);
+  indexList.push([
+    (startingIndex + 0) % TOWERS.length,
+    (startingIndex + 1) % TOWERS.length,
+    (startingIndex + 2) % TOWERS.length,
+    (startingIndex + 3) % TOWERS.length,
+  ]);
 
   startDate = startDate.add(8, "hour");
-  offset += 4;
+  startingIndex += 4;
 }
 
 const fuse = new Fuse(TOWERS, {
@@ -32,24 +37,47 @@ function App() {
 
   let fuseResult = fuse.search(filterText, { limit: 1 });
   if (fuseResult.length > 0) {
-    console.log(fuseResult[0].item);
+    console.log(fuseResult[0].item.towerFileName);
+    console.log(fuseResult);
   }
 
+  // Build list of dates and indices
   let now = dayjs();
-
-  let dateAndOffsetList = [];
-
+  let dateAndIndexList = [];
   for (let i = 0; i < startToEndDateList.length; i++) {
     if (startToEndDateList[i].isAfter(now.subtract(8, "hour"))) {
-      dateAndOffsetList.push([
-        startToEndDateList[i],
-        (offsetList[i] + 0) % TOWERS.length,
-        (offsetList[i] + 1) % TOWERS.length,
-        (offsetList[i] + 2) % TOWERS.length,
-        (offsetList[i] + 3) % TOWERS.length,
-      ]);
+      dateAndIndexList.push([startToEndDateList[i], indexList[i]]);
     }
   }
+
+  const rows = [];
+
+  dateAndIndexList.forEach(([date, rowTowerIndices]) => {
+    let searchBarEmpty = filterText.length == 0;
+
+    let towerIsInRow =
+      fuseResult.length > 0 && rowTowerIndices.includes(fuseResult[0].refIndex);
+
+    if (searchBarEmpty || towerIsInRow) {
+      rows.push(
+        <div className="mb-8" key={date}>
+          <h2 className="p-2 text-2xl font-semibold">
+            {date.format("dddd MMMM D h:mma")}
+          </h2>
+
+          <div className="flex flex-row justify-center space-x-3">
+            {rowTowerIndices.map((index) => (
+              <TowerCard
+                key={index}
+                towerFileName={TOWERS[index].towerFileName}
+                towerEnglishName={TOWERS[index].towerEnglishName}
+              />
+            ))}
+          </div>
+        </div>,
+      );
+    }
+  });
 
   return (
     <main className="flex max-w-[600px] flex-col items-center text-center">
@@ -67,29 +95,7 @@ function App() {
         className="mb-8 max-w-[250px] rounded-lg border border-gray-300 bg-gray-100 p-1 shadow dark:border-gray-700 dark:bg-gray-800"
       />
 
-      <div>
-        {dateAndOffsetList.map(
-          ([date, towerIndex1, towerIndex2, towerIndex3, towerIndex4]) => (
-            <div className="mb-8" key={date}>
-              <h2 className="p-2 text-2xl font-semibold">
-                {date.format("dddd MMMM D h:mma")}
-              </h2>
-
-              <div className="flex flex-row justify-center space-x-3">
-                {[towerIndex1, towerIndex2, towerIndex3, towerIndex4].map(
-                  (index) => (
-                    <TowerCard
-                      key={index}
-                      towerFileName={TOWERS[index].towerFileName}
-                      towerEnglishName={TOWERS[index].towerEnglishName}
-                    />
-                  ),
-                )}
-              </div>
-            </div>
-          ),
-        )}
-      </div>
+      {rows}
     </main>
   );
 }

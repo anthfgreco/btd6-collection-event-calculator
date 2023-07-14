@@ -56,14 +56,17 @@ const TOWERS = [
   {
     towerFileName: "dart-monkey",
     towerEnglishName: "Dart Monkey",
+    aliases: ["dart"],
   },
   {
     towerFileName: "banana-farm",
     towerEnglishName: "Banana Farm",
+    aliases: ["farm"],
   },
   {
     towerFileName: "monkey-village",
     towerEnglishName: "Monkey Village",
+    aliases: ["village"],
   },
   {
     towerFileName: "alchemist",
@@ -72,6 +75,7 @@ const TOWERS = [
   {
     towerFileName: "spike-factory",
     towerEnglishName: "Spike Factory",
+    aliases: ["spactory"],
   },
   {
     towerFileName: "bomb-shooter",
@@ -80,6 +84,7 @@ const TOWERS = [
   {
     towerFileName: "heli-pilot",
     towerEnglishName: "Heli Pilot",
+    aliases: ["helicopter"],
   },
   {
     towerFileName: "monkey-buccaneer",
