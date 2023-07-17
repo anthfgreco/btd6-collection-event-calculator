@@ -6,6 +6,7 @@ const TOWERS = [
   {
     towerFileName: "engineer-monkey",
     towerEnglishName: "Engineer Monkey",
+    aliases: ["engi"],
   },
   {
     towerFileName: "beast-handler",
@@ -26,6 +27,7 @@ const TOWERS = [
   {
     towerFileName: "boomerang-monkey",
     towerEnglishName: "Boomerang Monkey",
+    aliases: ["boomer"],
   },
   {
     towerFileName: "dartling-gunner",
@@ -80,6 +82,7 @@ const TOWERS = [
   {
     towerFileName: "bomb-shooter",
     towerEnglishName: "Bomb Shooter",
+    aliases: ["bomber"],
   },
   {
     towerFileName: "heli-pilot",

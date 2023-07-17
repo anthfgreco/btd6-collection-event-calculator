@@ -3,15 +3,28 @@ import TowerCard from "./TowerCard";
 import { useState } from "react";
 import { TOWERS } from "./towers";
 import Fuse from "fuse.js";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import advanced from "dayjs/plugin/advancedFormat";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(advanced);
+
+let timezoneName = dayjs.tz.guess();
+let timezoneAbbreviation = dayjs().tz(timezoneName).format("zzz");
+
+console.log(
+  `Guessed your current timezone to be: ${timezoneName} (${timezoneAbbreviation})`,
+);
 
 // American Independence Day Event
 // Ends July 24th 8pm NZST
 // Ends July 24th 4am EST
 
-let startDate = dayjs(new Date(2023, 6, 10, 12));
+let startDate = dayjs.tz(new Date(2023, 6, 10, 12), "America/Toronto");
 let startingIndex = 7;
-let endDate = dayjs(new Date(2023, 6, 24, 4));
-
+let endDate = dayjs.tz(new Date(2023, 6, 24, 4), "America/Toronto");
 let startToEndDateList = [];
 let indexList = [];
 
@@ -38,7 +51,6 @@ function App() {
   let fuseResult = fuse.search(filterText, { limit: 1 });
   if (fuseResult.length > 0) {
     console.log(fuseResult[0].item.towerFileName);
-    console.log(fuseResult);
   }
 
   // Build list of dates and indices
@@ -46,12 +58,16 @@ function App() {
   let dateAndIndexList = [];
   for (let i = 0; i < startToEndDateList.length; i++) {
     if (startToEndDateList[i].isAfter(now.subtract(8, "hour"))) {
-      dateAndIndexList.push([startToEndDateList[i], indexList[i]]);
+      let timezoneConvertedDate = startToEndDateList[i].tz(timezoneName);
+      let towerIndices = indexList[i];
+      dateAndIndexList.push([timezoneConvertedDate, towerIndices]);
     }
   }
 
   const rows = [];
 
+  // filterText.length is the number of characters in the search bar
+  // fuseResult.length is the number of results from the search, 0 if the search bar is empty OR no results found
   dateAndIndexList.forEach(([date, rowTowerIndices]) => {
     let searchBarEmpty = filterText.length == 0;
 
@@ -87,13 +103,19 @@ function App() {
         Calculator
       </h1>
 
-      <input
-        type="text"
-        value={filterText}
-        placeholder="Search tower..."
-        onChange={(e) => setFilterText(e.target.value)}
-        className="mb-8 max-w-[250px] rounded-lg border border-gray-300 bg-gray-100 p-1 shadow dark:border-gray-700 dark:bg-gray-800"
-      />
+      <div className="mb-8 flex flex-col items-center gap-7">
+        <p>
+          Timezone: {timezoneName} ({timezoneAbbreviation})
+        </p>
+
+        <input
+          type="text"
+          value={filterText}
+          placeholder="Search tower..."
+          onChange={(e) => setFilterText(e.target.value)}
+          className="max-w-[250px] rounded-lg border border-gray-300 bg-gray-100 p-1 shadow dark:border-gray-700 dark:bg-gray-800"
+        />
+      </div>
 
       {rows}
     </main>
