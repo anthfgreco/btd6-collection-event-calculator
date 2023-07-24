@@ -18,3 +18,24 @@
     Track tower rotations with timezone support and searching.
   </p>
 </div>
+
+## About
+
+This calculator helps players track tower rotations during Bloons TD 6 collection events.
+
+### Demo
+
+https://btd6-collection-event-calculator.vercel.app/
+
+### Built With
+
+- [React](https://reactjs.org/) for user interface
+- [Tailwind CSS](https://tailwindcss.com/) for styling
+- [Day.js](https://day.js.org/) for time manipulation and timezone support
+- [Fuse.js](https://www.fusejs.io/) for lightweight fuzzy searching
+
+## Development
+
+- Clone or fork project then navigate to the project folder
+- Install dependencies with `npm install`
+- Run development server with `npm run dev`
