@@ -1,4 +1,4 @@
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import TowerCard from "./TowerCard";
 import { useState } from "react";
 import { TOWERS } from "./towers";
