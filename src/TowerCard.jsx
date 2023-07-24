@@ -2,14 +2,13 @@ import PropTypes from "prop-types";
 
 function TowerCard({ towerFileName, towerEnglishName }) {
   return (
-    <div className="flex flex-col items-center rounded-lg border border-gray-300 bg-gray-100 p-3 shadow dark:border-gray-700 dark:bg-gray-800">
+    <div className="flex flex-col items-center rounded-lg border border-gray-300 bg-gray-100 p-3 shadow-md">
       <img
         src={`images/${towerFileName}.png`}
         alt={towerEnglishName}
-        width="80"
-        height="80"
+        className="h-24 md:h-fit"
       />
-      <p>{towerEnglishName}</p>
+      <p className="my-auto leading-snug">{towerEnglishName}</p>
     </div>
   );
 }

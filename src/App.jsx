@@ -14,17 +14,18 @@ dayjs.extend(advanced);
 let timezoneName = dayjs.tz.guess();
 let timezoneAbbreviation = dayjs().tz(timezoneName).format("zzz");
 
-console.log(
-  `Guessed your current timezone to be: ${timezoneName} (${timezoneAbbreviation})`,
-);
+// American Independence Day Event (event finished)
+// Ends July 24th 8pm NZST or July 24th 4am EST
+//
+// let startDate = dayjs.tz(new Date(2023, 6, 10, 12), "America/Toronto");
+// let startingIndex = 7;
+// let endDate = dayjs.tz(new Date(2023, 6, 24, 4), "America/Toronto");
 
-// American Independence Day Event
-// Ends July 24th 8pm NZST
-// Ends July 24th 4am EST
+// Fake times for debugging/demo
+let startDate = dayjs().set("hour", 0).set("minute", 0);
+let startingIndex = 0;
+let endDate = startDate.add(15, "days");
 
-let startDate = dayjs.tz(new Date(2023, 6, 10, 12), "America/Toronto");
-let startingIndex = 7;
-let endDate = dayjs.tz(new Date(2023, 6, 24, 4), "America/Toronto");
 let startToEndDateList = [];
 let indexList = [];
 
@@ -49,6 +50,7 @@ function App() {
   const [filterText, setFilterText] = useState("");
 
   let fuseResult = fuse.search(filterText, { limit: 1 });
+
   if (fuseResult.length > 0) {
     console.log(fuseResult[0].item.towerFileName);
   }
@@ -76,12 +78,12 @@ function App() {
 
     if (searchBarEmpty || towerIsInRow) {
       rows.push(
-        <div className="mb-8" key={date}>
-          <h2 className="p-2 text-2xl font-semibold">
+        <div className="mb-6" key={date}>
+          <h2 className="m-2 text-xl font-semibold">
             {date.format("dddd MMMM D h:mma")}
           </h2>
 
-          <div className="flex flex-row justify-center space-x-3">
+          <div className="mx-6 grid grid-cols-2 gap-3 md:flex">
             {rowTowerIndices.map((index) => (
               <TowerCard
                 key={index}
@@ -96,16 +98,19 @@ function App() {
   });
 
   return (
-    <main className="flex max-w-[600px] flex-col items-center text-center">
-      <h1 className="mb-8 text-5xl">
+    <main className="my-4 flex max-w-[600px] flex-col text-center">
+      <h1 className="mb-12 font-luckiest-guy text-5xl">
         BTD6 Collection Event
         <br />
         Calculator
       </h1>
 
-      <div className="mb-8 flex flex-col items-center gap-7">
+      <div className="mx-4 mb-12 flex flex-col items-center gap-4">
         <p>
-          Timezone: {timezoneName} ({timezoneAbbreviation})
+          Time Zone:{" "}
+          <span className="font-semibold">
+            {timezoneName} ({timezoneAbbreviation})
+          </span>
         </p>
 
         <input
@@ -113,7 +118,7 @@ function App() {
           value={filterText}
           placeholder="Search tower..."
           onChange={(e) => setFilterText(e.target.value)}
-          className="max-w-[250px] rounded-lg border border-gray-300 bg-gray-100 p-1 shadow dark:border-gray-700 dark:bg-gray-800"
+          className="max-w-[200px] rounded-lg border border-gray-300 bg-gray-100 p-1 shadow"
         />
       </div>
 
