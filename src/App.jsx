@@ -11,22 +11,35 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(advanced);
 
+// Determine the user's timezone
 let timezoneName = dayjs.tz.guess();
 let timezoneAbbreviation = dayjs().tz(timezoneName).format("zzz");
 
-// American Independence Day Event (event finished)
-// Ends July 24th 8pm NZST or July 24th 4am EST
-//
-// let startDate = dayjs.tz(new Date(2023, 6, 10, 12), "America/Toronto");
-// let startingIndex = 7;
-// let endDate = dayjs.tz(new Date(2023, 6, 24, 4), "America/Toronto");
+/*
+American Independence Day Event (event finished)
+Ends July 24th 8pm NZST or July 24th 4am EST
+
+let startDate = dayjs.tz(new Date(2023, 6, 10, 12), "America/Toronto");
+let startingIndex = 7;
+let endDate = dayjs.tz(new Date(2023, 6, 24, 4), "America/Toronto");
+*/
 
 // Fake times for debugging/demo
 let startDate = dayjs().set("hour", 0).set("minute", 0);
 let startingIndex = 0;
 let endDate = startDate.add(15, "days");
 
+/**
+ * Each date represents when the next tower rotation will occur
+ * @type {dayjs[]}
+ */
 let startToEndDateList = [];
+
+/**
+ * List of integer indices representing tower rotations
+ * Each inner array has 4 integer indices pointing to which tower is currently in rotation
+ * @type {number[][]}
+ */
 let indexList = [];
 
 while (startDate.isBefore(endDate)) {
@@ -37,29 +50,36 @@ while (startDate.isBefore(endDate)) {
     (startingIndex + 2) % TOWERS.length,
     (startingIndex + 3) % TOWERS.length,
   ]);
-
   startDate = startDate.add(8, "hour");
   startingIndex += 4;
 }
 
+/**
+ * A Fuse instance for fuzzy searching tower data.
+ * @type {Fuse}
+ */
 const fuse = new Fuse(TOWERS, {
   keys: ["towerEnglishName", "aliases"],
 });
 
 function App() {
-  const [filterText, setFilterText] = useState("");
+  const [searchBarText, setSearchBarText] = useState("");
 
-  let fuseResult = fuse.search(filterText, { limit: 1 });
+  let fuseResult = fuse.search(searchBarText, { limit: 1 });
 
-  if (fuseResult.length > 0) {
-    console.log(fuseResult[0].item.towerFileName);
-  }
-
-  // Build list of dates and indices
   let now = dayjs();
+  // We want the current rotation to display
+  let nowMinus8Hours = now.subtract(8, "hour");
+
+  /**
+   * An array to store date and tower rotation information based on the current time and user's timezone.
+   * Each inner array contains the timezone-converted date and the corresponding 4 tower indices.
+   * @type {(dayjs | number[])[]}
+   */
   let dateAndIndexList = [];
+
   for (let i = 0; i < startToEndDateList.length; i++) {
-    if (startToEndDateList[i].isAfter(now.subtract(8, "hour"))) {
+    if (startToEndDateList[i].isAfter(nowMinus8Hours)) {
       let timezoneConvertedDate = startToEndDateList[i].tz(timezoneName);
       let towerIndices = indexList[i];
       dateAndIndexList.push([timezoneConvertedDate, towerIndices]);
@@ -68,10 +88,11 @@ function App() {
 
   const rows = [];
 
-  // filterText.length is the number of characters in the search bar
-  // fuseResult.length is the number of results from the search, 0 if the search bar is empty OR no results found
+  // Loops through dateAndIndexList to generate JSX elements to render rows
+  // If the search bar is empty, display all rows
+  // If the search bar is not empty, search for a tower using fuse and display only rows containing that tower
   dateAndIndexList.forEach(([date, rowTowerIndices]) => {
-    let searchBarEmpty = filterText.length == 0;
+    let searchBarEmpty = searchBarText.length == 0;
 
     let towerIsInRow =
       fuseResult.length > 0 && rowTowerIndices.includes(fuseResult[0].refIndex);
@@ -115,9 +136,9 @@ function App() {
 
         <input
           type="text"
-          value={filterText}
+          value={searchBarText}
           placeholder="Search tower..."
-          onChange={(e) => setFilterText(e.target.value)}
+          onChange={(e) => setSearchBarText(e.target.value)}
           className="max-w-[200px] rounded-lg border border-gray-300 bg-gray-100 p-1 shadow"
         />
       </div>
