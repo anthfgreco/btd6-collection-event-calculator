@@ -27,7 +27,7 @@ const towersCycle = [
 
 // Cycle of 4 towers every 8 hours, but in plain English
 const towersEnglish = towersCycle.map((tower) =>
-  tower.replace("-", " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+  tower.replace("-", " ").replace(/\b\w/g, (c) => c.toUpperCase())
 );
 
 const combinedList = towersCycle.map((tower, index) => ({

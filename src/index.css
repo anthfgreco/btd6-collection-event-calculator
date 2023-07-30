@@ -1,13 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Debugging styling */
-.off {
-  outline: greenyellow;
-  outline-width: 1px;
-  outline-style: double;
-}
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 :root {
   font-family: "Open Sans", system-ui, Arial, sans-serif;
@@ -30,4 +23,11 @@ body {
   display: flex;
   flex-direction: column;
   place-items: center;
+}
+
+/* Debugging styling */
+.off {
+  outline: greenyellow;
+  outline-width: 1px;
+  outline-style: double;
 }

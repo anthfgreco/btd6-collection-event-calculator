@@ -31,16 +31,14 @@ let endDate = startDate.add(15, "days");
 
 /**
  * Each date represents when the next tower rotation will occur
- * @type {dayjs[]}
  */
-let startToEndDateList = [];
+let startToEndDateList: dayjs.Dayjs[] = [];
 
 /**
  * List of integer indices representing tower rotations
  * Each inner array has 4 integer indices pointing to which tower is currently in rotation
- * @type {number[][]}
  */
-let indexList = [];
+let indexList: [number, number, number, number][] = [];
 
 while (startDate.isBefore(endDate)) {
   startToEndDateList.push(startDate);
@@ -56,7 +54,6 @@ while (startDate.isBefore(endDate)) {
 
 /**
  * A Fuse instance for fuzzy searching tower data.
- * @type {Fuse}
  */
 const fuse = new Fuse(TOWERS, {
   keys: ["towerEnglishName", "aliases"],
@@ -74,19 +71,19 @@ function App() {
   /**
    * An array to store date and tower rotation information based on the current time and user's timezone.
    * Each inner array contains the timezone-converted date and the corresponding 4 tower indices.
-   * @type {(dayjs | number[])[]}
    */
-  let dateAndIndexList = [];
+  let dateAndIndexList: [dayjs.Dayjs, [number, number, number, number]][] = [];
 
   for (let i = 0; i < startToEndDateList.length; i++) {
     if (startToEndDateList[i].isAfter(nowMinus8Hours)) {
       let timezoneConvertedDate = startToEndDateList[i].tz(timezoneName);
-      let towerIndices = indexList[i];
+      let towerIndices: [number, number, number, number] = indexList[i];
+
       dateAndIndexList.push([timezoneConvertedDate, towerIndices]);
     }
   }
 
-  const rows = [];
+  const rows: JSX.Element[] = [];
 
   // Loops through dateAndIndexList to generate JSX elements to render rows
   // If the search bar is empty, display all rows
@@ -99,13 +96,13 @@ function App() {
 
     if (searchBarEmpty || towerIsInRow) {
       rows.push(
-        <div className="mb-6" key={date}>
+        <div className="mb-6" key={date.toString()}>
           <h2 className="m-2 text-xl font-semibold">
             {date.format("dddd MMMM D h:mma")}
           </h2>
 
           <div className="mx-6 grid grid-cols-2 gap-3 md:flex">
-            {rowTowerIndices.map((index) => (
+            {rowTowerIndices.map((index: number) => (
               <TowerCard
                 key={index}
                 towerFileName={TOWERS[index].towerFileName}
@@ -113,7 +110,7 @@ function App() {
               />
             ))}
           </div>
-        </div>,
+        </div>
       );
     }
   });

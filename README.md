@@ -29,7 +29,7 @@ https://btd6-collection-event-calculator.vercel.app/
 
 ### Built With
 
-- [React](https://reactjs.org/) for user interface
+- [React](https://reactjs.org/) with [TypeScript](https://www.typescriptlang.org/) for user interface
 - [Tailwind CSS](https://tailwindcss.com/) for styling
 - [Day.js](https://day.js.org/) for time manipulation and timezone support
 - [Fuse.js](https://www.fusejs.io/) for lightweight fuzzy searching

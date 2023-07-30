@@ -1,6 +1,9 @@
-import PropTypes from "prop-types";
+interface TowerCardProps {
+  towerFileName: string;
+  towerEnglishName: string;
+}
 
-function TowerCard({ towerFileName, towerEnglishName }) {
+function TowerCard({ towerFileName, towerEnglishName }: TowerCardProps) {
   return (
     <div className="flex flex-col items-center rounded-lg border border-gray-300 bg-gray-100 p-3 shadow-md">
       <img
@@ -12,10 +15,5 @@ function TowerCard({ towerFileName, towerEnglishName }) {
     </div>
   );
 }
-
-TowerCard.propTypes = {
-  towerFileName: PropTypes.string.isRequired,
-  towerEnglishName: PropTypes.string.isRequired,
-};
 
 export default TowerCard;
