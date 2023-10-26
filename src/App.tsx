@@ -25,9 +25,16 @@ let endDate = dayjs.tz(new Date(2023, 6, 24, 4), "America/Toronto");
 */
 
 // Fake times for debugging/demo
-let startDate = dayjs().set("hour", 0).set("minute", 0);
+// let startDate = dayjs().set("hour", 0).set("minute", 0);
+// let startingIndex = 0;
+// let endDate = startDate.add(15, "days");
+
+// Halloween Event
+// Started October 25th 8pm EDT
+// Ends November 9th 12am EST
+let startDate = dayjs.tz(new Date(2023, 10, 25, 20), "America/Toronto");
 let startingIndex = 0;
-let endDate = startDate.add(15, "days");
+let endDate = dayjs.tz(new Date(2023, 11, 9, 0), "America/Toronto");
 
 /**
  * Each date represents when the next tower rotation will occur
@@ -134,9 +141,9 @@ function App() {
         <input
           type="text"
           value={searchBarText}
-          placeholder="Search tower..."
+          placeholder="Search for tower..."
           onChange={(e) => setSearchBarText(e.target.value)}
-          className="max-w-[200px] rounded-lg border border-gray-300 bg-gray-100 p-1 shadow"
+          className="max-w-[300px] rounded-lg border border-gray-300 bg-gray-100 p-2 shadow"
         />
       </div>
 

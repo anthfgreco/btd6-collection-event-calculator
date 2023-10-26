@@ -27,32 +27,32 @@ def download_tower_images():
 
 towers_english = [tower.replace("-", " ").title() for tower in towers_cycle]
 
-current_date = datetime(year=2023, month=7, day=10, hour=12)
-offset = 7
+# current_date = datetime(year=2023, month=7, day=10, hour=12)
+# offset = 7
 
-print(current_date.strftime("%B %d, %Y, %H:%M"))
-print(towers_cycle[(offset + 0) % len(towers_cycle)])
-print(towers_cycle[(offset + 1) % len(towers_cycle)])
-print(towers_cycle[(offset + 2) % len(towers_cycle)])
-print(towers_cycle[(offset + 3) % len(towers_cycle)])
+# print(current_date.strftime("%B %d, %Y, %H:%M"))
+# print(towers_cycle[(offset + 0) % len(towers_cycle)])
+# print(towers_cycle[(offset + 1) % len(towers_cycle)])
+# print(towers_cycle[(offset + 2) % len(towers_cycle)])
+# print(towers_cycle[(offset + 3) % len(towers_cycle)])
 
 
-current_date += timedelta(hours=8)
-offset += 4
+# current_date += timedelta(hours=8)
+# offset += 4
 
-print()
-print(current_date.strftime("%B %d, %Y, %H:%M"))
-print(towers_cycle[(offset + 0) % len(towers_cycle)])
-print(towers_cycle[(offset + 1) % len(towers_cycle)])
-print(towers_cycle[(offset + 2) % len(towers_cycle)])
-print(towers_cycle[(offset + 3) % len(towers_cycle)])
+# print()
+# print(current_date.strftime("%B %d, %Y, %H:%M"))
+# print(towers_cycle[(offset + 0) % len(towers_cycle)])
+# print(towers_cycle[(offset + 1) % len(towers_cycle)])
+# print(towers_cycle[(offset + 2) % len(towers_cycle)])
+# print(towers_cycle[(offset + 3) % len(towers_cycle)])
 
-current_date += timedelta(hours=8)
-offset += 4
+# current_date += timedelta(hours=8)
+# offset += 4
 
-print()
-print(current_date.strftime("%B %d, %Y, %H:%M"))
-print(towers_cycle[(offset + 0) % len(towers_cycle)])
-print(towers_cycle[(offset + 1) % len(towers_cycle)])
-print(towers_cycle[(offset + 2) % len(towers_cycle)])
-print(towers_cycle[(offset + 3) % len(towers_cycle)])
+# print()
+# print(current_date.strftime("%B %d, %Y, %H:%M"))
+# print(towers_cycle[(offset + 0) % len(towers_cycle)])
+# print(towers_cycle[(offset + 1) % len(towers_cycle)])
+# print(towers_cycle[(offset + 2) % len(towers_cycle)])
+# print(towers_cycle[(offset + 3) % len(towers_cycle)])
