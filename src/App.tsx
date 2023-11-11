@@ -15,26 +15,23 @@ dayjs.extend(advanced);
 let timezoneName = dayjs.tz.guess();
 let timezoneAbbreviation = dayjs().tz(timezoneName).format("zzz");
 
-/*
-American Independence Day Event (event finished)
-Ends July 24th 8pm NZST or July 24th 4am EST
-
-let startDate = dayjs.tz(new Date(2023, 6, 10, 12), "America/Toronto");
-let startingIndex = 7;
-let endDate = dayjs.tz(new Date(2023, 6, 24, 4), "America/Toronto");
-*/
-
 // Fake times for debugging/demo
-// let startDate = dayjs().set("hour", 0).set("minute", 0);
-// let startingIndex = 0;
-// let endDate = startDate.add(15, "days");
+let startDate = dayjs().set("hour", 0).set("minute", 0);
+let startingIndex = 0;
+let endDate = startDate.add(15, "days");
+
+// American Independence Day Event (event finished)
+// Ends July 24th 8pm NZST or July 24th 4am EST
+// let startDate = dayjs.tz(new Date(2023, 6, 10, 12), "America/Toronto");
+// let startingIndex = 7;
+// let endDate = dayjs.tz(new Date(2023, 6, 24, 4), "America/Toronto");
 
 // Halloween Event
 // Started October 25th 8pm EDT
 // Ends November 9th 12am EST
-let startDate = dayjs.tz(new Date(2023, 9, 25, 20), "America/Toronto");
-let startingIndex = 0;
-let endDate = dayjs.tz(new Date(2023, 10, 9, 0), "America/Toronto");
+// let startDate = dayjs.tz(new Date(2023, 9, 25, 20), "America/Toronto");
+// let startingIndex = 0;
+// let endDate = dayjs.tz(new Date(2023, 10, 9, 0), "America/Toronto");
 
 /**
  * Each date represents when the next tower rotation will occur
